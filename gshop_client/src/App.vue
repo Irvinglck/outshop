@@ -1,12 +1,11 @@
 <template>
-  <div>
+  <div id="app">
     <!--路由组件-->
     <router-view/>
     <!--组件映射成标签-->
-    <FooterGuide/>
+    <FooterGuide v-show="$route.meta.showFooter"/>
 
   </div>
-
 </template>
 
 <script>
@@ -19,5 +18,8 @@
 </script>
 
 <style lang="stylus" ref="stylesheet/stylus">
-
+  .app
+    width 100%
+    height 100%
+    background #f5f5f5
 </style>
