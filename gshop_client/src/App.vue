@@ -10,10 +10,10 @@
 
 <script>
   import FooterGuide from './components/FooterGuide/FooterGuide'
-  import {reqFoodTypes} from './api/index'
+  import {reqFoodCategorys} from './api/index'
   export default {
-   async mounted() {
-      let reqFoodTypes1 =await reqFoodTypes();
+    mounted(){
+      let reqFoodTypes1 = reqFoodCategorys();
       console.log(reqFoodTypes1);
     },
     components: {

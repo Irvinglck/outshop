@@ -6,24 +6,23 @@ const path = require('path')
 
 module.exports = {
   dev: {
-
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    proxyTable: {  //配置代理实现跨域的ajax请求
-      '/api': { //匹配所有 '/api' 开头请求的路径
-        target: 'http://localhost:4000/',//代理目标的基础路径
-        changeOrigin: true, //支持跨域
-        pathRewrite: {  //重写路径：去掉路径中开头的'/api'
-          '^api': ''
+    proxyTable: {
+      '/api': { // 匹配所有以 '/api'开头的请求路径
+        target: 'http://localhost:4000', // 代理目标的基础路径
+        changeOrigin: true, // 支持跨域
+        secure : false,
+        pathRewrite: {// 重写路径: 去掉路径中开头的'/api'
+          '^/api': ''
         }
-
       }
     },
 
     // Various Dev Server settings
     host: 'localhost', // can be overwritten by process.env.HOST
-    port: 8080, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
+    port: 8082, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
     autoOpenBrowser: true,
     errorOverlay: true,
     notifyOnErrors: true,
