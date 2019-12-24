@@ -10,11 +10,24 @@
 
 <script>
   import FooterGuide from './components/FooterGuide/FooterGuide'
-  import {reqFoodCategorys} from './api/index'
+  import {mapActions} from "vuex";
+
   export default {
-    mounted(){
-      let reqFoodTypes1 = reqFoodCategorys();
-      console.log(reqFoodTypes1);
+     mounted() {
+      // const indexCateGrey = await reqFoodCategorys();
+      // console.log(indexCateGrey)
+      // console.log(indexCateGrey.data[0].description)
+      //判断对象是为啥类型
+      // let s = Object.prototype.toString.call(data);
+      // console.log(s);
+      // let parse = JSON.parse(data);
+      // reqFoodCategorys().then(response=>{
+      //   console.log(response.data)
+      // })
+      this.$store.dispatch("getCategorys");
+    },
+    methods:{
+      ...mapActions(['getCategorys'])
     },
     components: {
       FooterGuide
