@@ -2,16 +2,16 @@
  * 直接更新state的方法对象
  * */
 
-import {RECEIVE_ADDRESS,RECEIVE_CATEGORYS,RECEIVE_SHOPS} from './mutations-type'
+import {RECEIVE_ADDRESS,RECEIVE_FOOD_LIST,RECEIVE_SHOPS} from './mutations-type'
 export default {
   [RECEIVE_ADDRESS](state,{address}){
     state.address=address;
   },
-  [RECEIVE_CATEGORYS](state,{category}){
-    state.category=category;
+  [RECEIVE_FOOD_LIST](state,{foodList}){
+    state.category=foodList;
   },
-  [RECEIVE_SHOPS](state,{shops}){
-    state.shops=shops;
+  [RECEIVE_SHOPS](state,{shoopList}){
+    state.shops=shoopList;
   }
 }
 

@@ -1,8 +1,8 @@
 /**
  * 间接更新，通过mutation 更新state
  * */
-import {RECEIVE_ADDRESS, RECEIVE_CATEGORYS, RECEIVE_SHOPS} from './mutations-type';
-import {reqAddress, reqFoodCategorys, reqShops} from '../api'
+import {RECEIVE_ADDRESS, RECEIVE_FOOD_LIST, RECEIVE_SHOPS} from './mutations-type';
+import {getFoodList, reqAddress, reqShops} from '../api'
 
 export default {
   //异步获取地址
@@ -17,18 +17,11 @@ export default {
   },
 
   //异步获取食品分类列表
-  async getCategorys({commit}){
-    const result=await reqFoodCategorys();
+  async getFoodList({commit,state}){
+    const result=await getFoodList();
     if(result.code===0){
-      const category=result.data;
-      //提交一个mutation
-      console.log(category)
-
-      let s = Object.prototype.toString.call(category);
-      console.log(s)
-      console.log("=================")
-
-      commit(RECEIVE_CATEGORYS,category)
+      const foodList=result.data;
+      commit(RECEIVE_FOOD_LIST,{foodList})
     }
   },
 

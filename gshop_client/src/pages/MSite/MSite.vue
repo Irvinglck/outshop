@@ -3,17 +3,17 @@
     <section class="msite">
       <!--首页头部-->
       <!--<header class="header">-->
-          <!--<span class="header_search">-->
-            <!--<i class="iconfont icon-sousuo"></i>-->
-          <!--</span>-->
-        <!--<span class="header_title">-->
-            <!--<span class="header_title_text ellipsis">昌平区北七家宏福科技园(337省道北)</span>-->
-          <!--</span>-->
-        <!--<span class="header_login">-->
-            <!--<span class="header_login_text">登录|注册</span>-->
-          <!--</span>-->
+      <!--<span class="header_search">-->
+      <!--<i class="iconfont icon-sousuo"></i>-->
+      <!--</span>-->
+      <!--<span class="header_title">-->
+      <!--<span class="header_title_text ellipsis">昌平区北七家宏福科技园(337省道北)</span>-->
+      <!--</span>-->
+      <!--<span class="header_login">-->
+      <!--<span class="header_login_text">登录|注册</span>-->
+      <!--</span>-->
       <!--</header>-->
-      <HeaderTop title="昌平区北七家宏福科技园(337省道北)">
+      <HeaderTop :title="address.name">
          <span class="header_search" slot="left">
             <i class="iconfont icon-search1"></i>
           </span>
@@ -25,20 +25,21 @@
       <!--首页导航-->
       <nav class="msite_nav">
         <!--<div class="icon-jiantou"></div>-->
-        <div class="swiper-container">
+        <div class="swiper-container" v-if="category.length">
           <div class="swiper-wrapper">
-            <div class="swiper-slide" v-for="(categorys,index) in categorysArr" :key="index">
-              <a href="javascript:" class="link_to_food" v-for="(category,index) in categorys" :key="index">
+            <div class="swiper-slide" v-for="(foodList,index) in categorysArr" :key="index">
+              <a href="javascript:" class="link_to_food" v-for="(category,index) in foodList" :key="index">
                 <div class="food_container">
-                  <img src="./images/nav/1.jpg">
+                  <img :src="BASE_IMG_URL+category.image_url">
                 </div>
-                <span>甜品饮品</span>
+                <span>{{category.title}}</span>
               </a>
             </div>
           </div>
           <!-- Add Pagination -->
           <div class="swiper-pagination"></div>
         </div>
+        <img src="./images/svg/msite_back.svg" alt="back" v-else/>
       </nav>
       <!--首页附近商家-->
       <div class="msite_shop_list">
@@ -57,48 +58,66 @@
   import 'swiper/css/swiper.min.css'
   import HeaderTop from '../../components/HeaderTop/HeaderTop'
   import ShopList from '../../components/ShopList/ShopList'
-  import {mapState,mapActions} from 'vuex'
+  import {mapState} from 'vuex'
 
   export default {
-    data(){
-      return{
+    data() {
+      return {
         BASE_IMG_URL: 'https://fuss10.elemecdn.com'
       }
     },
-    components:{
+    components: {
       HeaderTop,
       ShopList
     },
     //初始化构建页面之前执行
-    mounted(){
-      //调用action代理类
-      this.$store.dispatch("getCategorys")
-      //轮播
-      new Swiper ('.swiper-container', {
-        // direction: 'vertical', // 垂直切换选项
-        loop: true, // 循环模式选项
-        // 如果需要分页器
-        pagination: {
-          el: '.swiper-pagination',
-        }
-      })
+    mounted() {
+      //调用action代理类(方式一)
+      this.$store.dispatch("getFoodList");
+      //获取商品列表
+      this.$store.dispatch("getShopList")
     },
-
+    methods: {},
     //计算属性
     computed: {
       //接收属性(接收state中的属性)
-      ...mapState(['category']),
-      categorysArr(){
-        debugger
-        const {category} =this;
-        let s = Object.prototype.toString.call(category);
-        console.log(s)
-        console.log("000000000000000000")
-        const arr=[];
+      ...mapState(['address', 'category','shops']),
+      categorysArr() {
+        const {category,shops} = this;
+        //大数组
+        const arr = [];
+        //小数组
+        let minArr = [];
+        category.forEach(item => {
+          if (minArr.length === 8) {
+            minArr = [];
+          }
+          if (minArr.length === 0) {
+            arr.push(minArr)
+          }
+          minArr.push(item);
+        })
         return arr;
       }
+    },
+    //watch监视
+    watch: {
+      //state: 中的属性category
+      category(value) {
+        //异步显示,一旦页面数据更新完成，就立马调用（此句写在更新数据之后）
+        this.$nextTick(() => {
+          //轮播
+          new Swiper('.swiper-container', {
+            // direction: 'vertical', // 垂直切换选项
+            loop: true, // 循环模式选项
+            // 如果需要分页器
+            pagination: {
+              el: '.swiper-pagination',
+            }
+          })
+        })
+      }
     }
-
   }
 </script>
 <style lang="stylus" ref="stylesheet/stylus">
@@ -140,7 +159,7 @@
                 font-size 13px
                 color #666
         .swiper-pagination
-          >span.swiper-pagination-bullet-active
+          > span.swiper-pagination-bullet-active
             background #02a774
     .msite_shop_list
       top-border-1px(#e4e4e4)

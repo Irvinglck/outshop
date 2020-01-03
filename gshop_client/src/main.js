@@ -12,5 +12,4 @@ new Vue({
   render: h=>h(App),
   router, //使用vue-router
   store   //使用store
-
 })
