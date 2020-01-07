@@ -19,7 +19,7 @@
                   </button>
               </section>
               <section class="login_verification">
-                <input type="text" maxlength="8" placeholder="验证码" v-model="code">
+                <input type="text" maxlength="8" placeholder="验证码" v-model="code" >
               </section>
               <section class="login_hint">
                 温馨提示：未注册硅谷外卖帐号的手机号，登录时将自动注册，且代表已同意
@@ -41,7 +41,7 @@
                 </section>
                 <section class="login_message">
                   <input type="text" maxlength="11" placeholder="验证码" v-model="captcha">
-                  <img class="get_verification" src="./images/captcha.svg" alt="captcha">
+                  <img class="get_verification" src="http://localhost:4000/captcha" alt="captcha" ref="captcha" @click="getCaptcha">
                 </section>
               </section>
             </div>
@@ -59,12 +59,13 @@
 </template>
 <script>
   import AlterTip from '../../components/TipMessage/AlterTip'
+  import {reqSendCode,reqPwdLogin,reqSmsLogin} from '../../api/index'
   export default {
     data(){
       return{
         loginWay: true,
         phone: '',//手机号码
-        computedCount:0,
+        computedCount:0,//倒计时时间
         showPwd:false,//是否显示密码,
         pwd:'',//密码
         code:'',//验证码
@@ -78,53 +79,103 @@
       changeLoginWay(flag){
         this.loginWay=flag;
       },
-      //获取验证码
-      getCode(){
+      //获取验证码,异步获取短息验证码
+     async getCode(){
         if(!this.computedCount){
           //前端显示
           this.computedCount=30;
-          const interval = setInterval(()=>{
+           this.intervalId = setInterval(()=>{
             this.computedCount--;
             if(this.computedCount<0){
-              clearInterval(interval)
+              clearInterval(this.intervalId)
             }
           },1000);
-          //发送ajax请求
+          //请求验证码
+          const result = await reqSendCode(this.phone);
+          if(result.data===0){
+            //停止倒计时
+            if(this.computedCount){
+              this.computedCount=0;
+              clearInterval(this.intervalId)
+            }
+          }else{
+            this.tipMethod("验证码请求错误",result.data)
+            this.computedCount=0;
+            clearInterval(this.intervalId)
+          }
         }else
           return
       },
-      login(){
+      tipMethod(value){
+        this.showAlterTip=true;
+        this.alertText=value;
+      },
+     async login(){
         //短信登陆
         if(this.loginWay){
           const {phone,code}=this;
-          if(!phone){
-            this.showAlterTip=true;
-            this.alertText='手机号码错误';
-          }else if(!code){
-            this.showAlterTip=true;
-            this.alertText='验证码错误';
+          if(!/^1\d{10}$/.test(phone)){
+            this.tipMethod("手机号码只能是11位数字");
+            return
+          }else if(!/^\d{6}$/.test(code)){
+            this.tipMethod("验证码只能是六位数字");
+            return
+          }
+          //短信登陆,发送ajax请求
+          const result =await reqSmsLogin(phone,code);
+          //跳转我的页面
+          if(result.code===0){
+            //保存用户信息（引用actions）
+            console.log(result.data,"result.data")
+            this.$store.dispatch("recordUser",result.data)
+            this.$router.replace("/profile");
+          }else{
+            this.tipMethod(result.msg)
+            return
           }
         }
         //密码登陆
         else{
           const {name,pwd,captcha}=this;
-          if(name){
-
-          }else if(pwd){
-
-          }else if(captcha){
-
+          if(!name){
+            this.tipMethod("用户名错误");
+            return
+          }else if(!pwd){
+            this.tipMethod("密码名错误");
+            return
+          }else if(!captcha){
+            this.tipMethod("验证码错误");
+            return
           }
-        }
+          //密码登陆,发送ajax请求
+          const result=await reqPwdLogin({name, pwd, captcha});
+          if(result.code===0){
+            //保存用户信息（引用actions）
+            this.$store.dispatch("recordUser",result.data)
+            this.$router.replace("/profile");
+          }else{
+            this.tipMethod(result.msg);
+            return
+          }
 
+
+        }
       },
       //切换密码显示
       switchShow(flag){
         this.showPwd=flag;
       },
+      //关闭警告框（自定义事件）
       closeTip(){
         this.showAlterTip=false;
         this.alertText='';
+      },
+      //获取captcha验证码
+      getCaptcha(){
+        //获取当前标签对象
+        // console.log("event.target",event.target)
+        // event.target.src="http://localhost:4000/captcha?time="+new Date();
+        this.$refs.captcha.src="http://localhost:4000/captcha?time="+new Date();
       }
     },
     computed:{

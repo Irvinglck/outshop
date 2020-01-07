@@ -14,12 +14,15 @@
       <!--</span>-->
       <!--</header>-->
       <HeaderTop :title="address.name">
-         <span class="header_search" slot="left">
-            <i class="iconfont icon-search1"></i>
-          </span>
-        <span class="header_login" slot="right">
-            <span class="header_login_text">登录|注册</span>
-          </span>
+         <router-link class="header_search" slot="left" to="/search">
+            <i class="iconfont icon-search"></i>
+          </router-link>
+        <router-link class="header_login" slot="right" :to="userInfo._id? '/userinfo':'/login'" >
+            <span class="header_login_text" v-if="!userInfo._id">登录|注册</span>
+            <span class="header_login_text" v-else>
+              <i class="iconfont icon-gerenzhongxinwoderenwubiaozhuntoumianxing"></i>
+            </span>
+        </router-link>
       </HeaderTop>
 
       <!--首页导航-->
@@ -81,7 +84,7 @@
     //计算属性
     computed: {
       //接收属性(接收state中的属性)
-      ...mapState(['address', 'category','shops']),
+      ...mapState(['address', 'category','shops','userInfo']),
       categorysArr() {
         const {category,shops} = this;
         //大数组

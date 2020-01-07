@@ -50,7 +50,7 @@
   import Star from '../../pages/star/star'
   export default {
     computed:{
-      //从属性中取值
+      //从state属性中取值
       ...mapState(['shops']),
     },
     components:{

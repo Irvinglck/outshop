@@ -9,21 +9,19 @@
             <i class="iconfont icon-person"></i>
           </div>
           <div class="user-info">
-            <p class="user-info-top">登录/注册</p>
+            <p class="user-info-top" v-if="!userInfo.phone">{{userInfo.name||'登录/注册'}}</p>
             <p>
                 <span class="user-icon">
                   <i class="iconfont icon-shouji icon-mobile"></i>
                 </span>
-              <span class="icon-mobile-number">暂无绑定手机号</span>
+              <span class="icon-mobile-number">{{userInfo.phone||'暂无绑定手机号'}}</span>
             </p>
           </div>
           <span class="arrow">
               <i class="iconfont icon-jiantou1"></i>
             </span>
         </router-link>
-
         <!--<a href="javascript:" class="profile-link">-->
-
         <!--</a>-->
       </section>
       <section class="profile_info_data border-1px">
@@ -99,7 +97,12 @@
 </template>
 <script>
   import HeaderTop from "../../components/HeaderTop/HeaderTop";
+  import {mapState} from "vuex";
   export default {
+    computed:{
+      //从state中获取值,用户信息userInfo
+      ...mapState(['userInfo'])
+    },
     components: {HeaderTop}
   }
 </script>

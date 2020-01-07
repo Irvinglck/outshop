@@ -1,7 +1,7 @@
 /**
  * 间接更新，通过mutation 更新state
  * */
-import {RECEIVE_ADDRESS, RECEIVE_FOOD_LIST, RECEIVE_SHOPS} from './mutations-type';
+import {RECEIVE_ADDRESS, RECEIVE_FOOD_LIST, RECEIVE_SHOPS,RECEIVE_USER_INFO} from './mutations-type';
 import {getFoodList, reqAddress, reqShops} from '../api'
 
 export default {
@@ -17,7 +17,7 @@ export default {
   },
 
   //异步获取食品分类列表
-  async getFoodList({commit,state}){
+  async getFoodList({commit}){
     const result=await getFoodList();
     if(result.code===0){
       const foodList=result.data;
@@ -33,5 +33,9 @@ export default {
       //提交一个mutation
       commit(RECEIVE_SHOPS,{shoopList})
     }
+  },
+  //同步记录用户信息
+  recordUser({commit},userInfo){
+    commit(RECEIVE_USER_INFO,{userInfo})
   }
 }
