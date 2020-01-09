@@ -18,6 +18,7 @@
       // this.$store.dispatch("getAddress");
       //通过methods调用actions中的方法（方式二）
       this.getAddress("")
+      this.$store.dispatch("getUserInfoBySession");
     },
     methods: {
       ...mapActions(['getAddress']),

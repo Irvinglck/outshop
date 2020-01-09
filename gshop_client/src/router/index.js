@@ -10,7 +10,13 @@ import MSite from '../pages/MSite/MSite';
 import Search from '../pages/Search/Search';
 import Profile from '../pages/Profile/Profile';
 import Order from '../pages/Order/Order';
-import Login from '../pages/Login/Login'
+import Login from '../pages/Login/Login';
+
+import Shop from '../pages/Shop/Shop';
+import ShopGoods from '../pages/Shop/ShopGoods/ShopGoods'
+import ShopRating from '../pages/Shop/ShopRating/ShopRating'
+import ShopInfos from '../pages/Shop/ShopInfo/ShopInfos'
+
 
 //声明使用路由插件
 Vue.use(VueRouter);
@@ -57,6 +63,30 @@ export  default new VueRouter({
     {
       path: '/',
       redirect: '/msite'
+    },
+    //点击商品详情界面路由
+    {
+      path: '/shop',
+      component: Shop,
+      children:[
+        {
+          path: '/shop/good',
+          component: ShopGoods,
+        },
+        {
+          path: '/shop/rating',
+          component: ShopRating,
+        },
+        {
+          path: '/shop/user_info',
+          component: ShopInfos
+        },
+        {
+          path: '',
+          redirect: '/shop/good'
+        }
+      ]
     }
+
   ]
 })

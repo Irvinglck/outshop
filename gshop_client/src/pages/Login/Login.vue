@@ -126,7 +126,6 @@
           //跳转我的页面
           if(result.code===0){
             //保存用户信息（引用actions）
-            console.log(result.data,"result.data")
             this.$store.dispatch("recordUser",result.data)
             this.$router.replace("/profile");
           }else{
@@ -157,8 +156,6 @@
             this.tipMethod(result.msg);
             return
           }
-
-
         }
       },
       //切换密码显示

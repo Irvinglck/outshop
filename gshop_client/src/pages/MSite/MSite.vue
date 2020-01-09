@@ -17,8 +17,8 @@
          <router-link class="header_search" slot="left" to="/search">
             <i class="iconfont icon-search"></i>
           </router-link>
-        <router-link class="header_login" slot="right" :to="userInfo._id? '/userinfo':'/login'" >
-            <span class="header_login_text" v-if="!userInfo._id">登录|注册</span>
+        <router-link class="header_login" slot="right" :to="(userInfo.id)?'/userinfo':'/login'" >
+            <span class="header_login_text" v-if="!userInfo.id">登录|注册</span>
             <span class="header_login_text" v-else>
               <i class="iconfont icon-gerenzhongxinwoderenwubiaozhuntoumianxing"></i>
             </span>
@@ -31,7 +31,7 @@
         <div class="swiper-container" v-if="category.length">
           <div class="swiper-wrapper">
             <div class="swiper-slide" v-for="(foodList,index) in categorysArr" :key="index">
-              <a href="javascript:" class="link_to_food" v-for="(category,index) in foodList" :key="index">
+              <a href="javascript:" class="link_to_food" v-for="(category,index) in foodList" :key="index" >
                 <div class="food_container">
                   <img :src="BASE_IMG_URL+category.image_url">
                 </div>
@@ -80,7 +80,9 @@
       //获取商品列表
       this.$store.dispatch("getShopList")
     },
-    methods: {},
+    methods: {
+
+    },
     //计算属性
     computed: {
       //接收属性(接收state中的属性)

@@ -92,16 +92,35 @@
           </div>
         </a>
       </section>
+      <section class="profile_my_order border-1px">
+        <mt-button type="danger" style="width: 100%" @click="logout" v-if="userInfo.id">退出登陆</mt-button>
+      </section>
     </section>
   </div>
 </template>
 <script>
   import HeaderTop from "../../components/HeaderTop/HeaderTop";
   import {mapState} from "vuex";
+  import {MessageBox,Toast } from 'mint-ui';
+
   export default {
-    computed:{
+    computed: {
       //从state中获取值,用户信息userInfo
       ...mapState(['userInfo'])
+    },
+    methods: {
+      logout() {
+        MessageBox.confirm('真的要离开么?').then(
+          action => {
+              //注销用户信息
+            this.$store.dispatch("resetUserInfo")
+            Toast({message:'退出成功',duration: 1000});
+          },
+          action => {
+            console.log("用户点击了取消")
+          }
+        );
+      }
     },
     components: {HeaderTop}
   }
@@ -207,12 +226,12 @@
         display flex
         align-items center
         padding-left 15px
-        >span
+        > span
           display flex
           align-items center
           width 20px
           height 20px
-          >.iconfont
+          > .iconfont
             margin-left -10px
             font-size 30px
           .icon-dingdan

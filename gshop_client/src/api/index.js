@@ -26,7 +26,7 @@ export const reqSendCode = (phone) => ajax(BASE_URL+'/getMsg', {phone})
 // 8、手机号验证码登陆
 export const reqSmsLogin = (phone, code) => ajax(BASE_URL+'/login_sms', {phone:phone, code:code}, 'POST')
 // 9、根据会话获取用户信息
-export const reqUserInfo = () => ajax(BASE_URL+'/userinfo')
+export const reqUserInfo = () => ajax(BASE_URL+'/user_info')
 // 10、用户登出
 export const reqLogout = () => ajax(BASE_URL+'/logout')
 

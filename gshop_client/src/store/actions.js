@@ -1,8 +1,8 @@
 /**
  * 间接更新，通过mutation 更新state
  * */
-import {RECEIVE_ADDRESS, RECEIVE_FOOD_LIST, RECEIVE_SHOPS,RECEIVE_USER_INFO} from './mutations-type';
-import {getFoodList, reqAddress, reqShops} from '../api'
+import {RECEIVE_ADDRESS, RECEIVE_FOOD_LIST, RECEIVE_SHOPS,RECEIVE_USER_INFO,REST_USER_INFO} from './mutations-type';
+import {getFoodList, reqAddress, reqShops,reqUserInfo,reqLogout} from '../api'
 
 export default {
   //异步获取地址
@@ -37,5 +37,20 @@ export default {
   //同步记录用户信息
   recordUser({commit},userInfo){
     commit(RECEIVE_USER_INFO,{userInfo})
+  },
+  //获取session中用户信息
+  async getUserInfoBySession({commit}){
+    const result=await reqUserInfo();
+    if(result.code===0){
+      const userInfo=result.data;
+      commit(RECEIVE_USER_INFO,{userInfo});
+    }
+  },
+  //注销用户信息
+  async resetUserInfo({commit}){
+    const result=await reqLogout();
+    if(result.code===0){
+      commit(REST_USER_INFO)
+    }
   }
 }
