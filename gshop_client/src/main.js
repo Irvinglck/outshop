@@ -8,6 +8,9 @@ import { Button } from 'mint-ui'
 import router from "./router"
 import store from "./store/index"
 
+//加载mock数据
+import "./mock/mockServer.js"
+
 //注册成全局组件（mtbutton）
 Vue.component(Button.name, Button)
 
