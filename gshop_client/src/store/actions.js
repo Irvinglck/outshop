@@ -1,8 +1,8 @@
 /**
  * 间接更新，通过mutation 更新state
  * */
-import {RECEIVE_ADDRESS, RECEIVE_FOOD_LIST, RECEIVE_SHOPS,RECEIVE_USER_INFO,REST_USER_INFO} from './mutations-type';
-import {getFoodList, reqAddress, reqShops,reqUserInfo,reqLogout} from '../api'
+import {RECEIVE_ADDRESS, RECEIVE_FOOD_LIST, RECEIVE_SHOPS,RECEIVE_USER_INFO,REST_USER_INFO,RECEIVE_GOODS,RECEIVE_INFO,RECEIVE_RATINGS} from './mutations-type';
+import {getFoodList, reqAddress, reqShops,reqUserInfo,reqLogout,reqShopGoods,reqShopInfo,reqShopRatings} from '../api'
 
 export default {
   //异步获取地址
@@ -52,5 +52,29 @@ export default {
     if(result.code===0){
       commit(REST_USER_INFO)
     }
+  },
+  //mock商品信息数据
+  async receiveInfos({commit}){
+    const result=await reqShopInfo();
+    if(result.code===0){
+      let info=result.data;
+      commit(RECEIVE_INFO,{info})
+    }
+  },
+  //mock商品列表
+  async receiveGoods({commit}){
+    const result=await reqShopGoods();
+    if(result.code===0){
+      let goods=result.data;
+      commit(RECEIVE_GOODS,{goods})
+    }
   }
+  // //mock评价列表
+  // async receiveRatings({commit}){
+  //   const result=await reqShopRatings();
+  //   if(result.code===0){
+  //     let ratings=result.data;
+  //     commit(RECEIVE_GOODS,{ratings})
+  //   }
+  // }
 }
