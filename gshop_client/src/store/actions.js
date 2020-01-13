@@ -62,11 +62,12 @@ export default {
     }
   },
   //mock商品列表
-  async receiveGoods({commit}){
+  async receiveGoods({commit},callback){
     const result=await reqShopGoods();
     if(result.code===0){
       let goods=result.data;
       commit(RECEIVE_GOODS,{goods})
+      callback&&callback();
     }
   }
   // //mock评价列表

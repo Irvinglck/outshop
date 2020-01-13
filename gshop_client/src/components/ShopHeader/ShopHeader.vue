@@ -36,7 +36,7 @@
           <span class="content-tag"><span class="mini-tag">品牌</span></span>
           <span class="content-name">嘉禾一品（温都水城） </span>
         </h2>
-        <ul class="brief-modal-msg">
+        <ul class="brief-modal-msg" style="list-style: none">
           <li>
             <h3>3.5</h3>
             <p>评分</p>
