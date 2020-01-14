@@ -1,7 +1,7 @@
 /**
  * 间接更新，通过mutation 更新state
  * */
-import {RECEIVE_ADDRESS, RECEIVE_FOOD_LIST, RECEIVE_SHOPS,RECEIVE_USER_INFO,REST_USER_INFO,RECEIVE_GOODS,RECEIVE_INFO,RECEIVE_RATINGS} from './mutations-type';
+import {RECEIVE_ADDRESS, RECEIVE_FOOD_LIST, RECEIVE_SHOPS,RECEIVE_USER_INFO,REST_USER_INFO,RECEIVE_GOODS,RECEIVE_INFO,RECEIVE_RATINGS,DECREMENT_FOOD_COUNT,INCREMENT_FOOD_COUNT} from './mutations-type';
 import {getFoodList, reqAddress, reqShops,reqUserInfo,reqLogout,reqShopGoods,reqShopInfo,reqShopRatings} from '../api'
 
 export default {
@@ -68,6 +68,14 @@ export default {
       let goods=result.data;
       commit(RECEIVE_GOODS,{goods})
       callback&&callback();
+    }
+  },
+  updateShopCount({commit},{flag,food}){
+    if(flag){//添加食物
+      console.log(food,"Food-------")
+      commit(INCREMENT_FOOD_COUNT,{food})
+    }else{//减少食物
+      commit(DECREMENT_FOOD_COUNT,{food})
     }
   }
   // //mock评价列表
