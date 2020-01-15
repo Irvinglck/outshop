@@ -72,7 +72,7 @@ export default {
   },
   updateShopCount({commit},{flag,food}){
     if(flag){//添加食物
-      console.log(food,"Food-------")
+      console.log(food,"添加食品Food-------")
       commit(INCREMENT_FOOD_COUNT,{food})
     }else{//减少食物
       commit(DECREMENT_FOOD_COUNT,{food})

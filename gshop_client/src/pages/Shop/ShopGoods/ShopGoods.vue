@@ -38,8 +38,9 @@
           </li>
         </ul>
       </div>
+      <ShopCart/>
     </div>
-    <Food :food="food" :flag="flag"/>
+    <Food :food="food" ref="food"/>
   </div>
 </template>
 <script>
@@ -47,6 +48,7 @@
   import BScroll from 'better-scroll'
   import CartControl from "../../../components/CartControl/CartControl"
   import Food from "../../../components/Food/Food"
+  import ShopCart from "../../../components/ShopCart/ShopCart"
   export default {
     data() {
       return {
@@ -121,12 +123,13 @@
         //设置当前组件state,的food值
         this.food=food;
         //显示food组件
-        this.flag=!this.flag;
+        this.$refs.food.showHandler();
       }
     },
     components:{
       CartControl,
-      Food
+      Food,
+      ShopCart
     }
   }
 </script>
