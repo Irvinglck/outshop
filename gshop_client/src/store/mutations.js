@@ -12,7 +12,8 @@ import {
   RECEIVE_RATINGS,
   RECEIVE_GOODS,
   DECREMENT_FOOD_COUNT,
-  INCREMENT_FOOD_COUNT
+  INCREMENT_FOOD_COUNT,
+  CLEAR_SHOP_CART
 } from './mutations-type'
 import Vue from "vue";
 
@@ -44,7 +45,7 @@ export default {
   [INCREMENT_FOOD_COUNT](state, {food}) {
     if (!food.count) {
       Vue.set(food, "count", 1)//给对象添加属性，并且给属性赋新值
-    //  在购物车中加入食品
+      //  在购物车中加入食品
       state.shopCartFoods.push(food);
     } else {
       food.count++;
@@ -53,10 +54,16 @@ export default {
   [DECREMENT_FOOD_COUNT](state, {food}) {
     if (food.count) {
       food.count--;
-      if(!food.count){
-        state.shopCartFoods.splice(state.shopCartFoods.indexOf(food),1)
+      if (!food.count) {
+        state.shopCartFoods.splice(state.shopCartFoods.indexOf(food), 1)
       }
     }
+  },
+  [CLEAR_SHOP_CART](state) {
+    //清空食品数量
+    state.shopCartFoods.forEach((item) => item.count = 0)
+    //重置状态
+    state.shopCartFoods = []
   }
 }
 

@@ -21,7 +21,7 @@
       <div class="shopcart-list" v-if="isShow" @click="showHandler">
         <div class="list-header" v-if="isShow">
           <h1 class="title">购物车</h1>
-          <span class="empty">清空</span>
+          <span class="empty" @click.stop="clearShopCart">清空</span>
         </div>
         <div class="list-content">
           <ul style="list-style: none">
@@ -31,7 +31,6 @@
               <div class="cartcontrol-wrapper">
                 <CartControl :food="food"/>
               </div>
-
             </li>
           </ul>
         </div>
@@ -43,10 +42,12 @@
 <script>
   import {mapState, mapGetters} from "vuex"
   import CartControl from "../CartControl/CartControl"
+  import {MessageBox} from 'mint-ui';
+
   export default {
-    data(){
-      return{
-        isShow:true
+    data() {
+      return {
+        isShow: true
       }
     },
     computed: {
@@ -59,30 +60,36 @@
         const {minPrice} = this.info
         return totalPrice < minPrice ? "not-enough" : "enough"
       },
-      payDesPrice(){
+      payDesPrice() {
         //从组件计算comuted中取值
-        const{totalPrice}=this;
+        const {totalPrice} = this;
         const {minPrice} = this.info;
-        if(totalPrice===0){
+        if (totalPrice === 0) {
           return `￥${minPrice}起送`;
-        }else if(totalPrice<minPrice){
-          return `还差￥${minPrice-totalPrice}起送`;
-        }else{
+        } else if (totalPrice < minPrice) {
+          return `还差￥${minPrice - totalPrice}起送`;
+        } else {
           return `结算`;
         }
       }
     },
-    components:{
+    components: {
       CartControl
     },
-    methods:{
-      showHandler(){
-        console.log("isShow",this.isShow)
-        this.isShow=!this.isShow;
-        console.log("isShow",this.isShow)
+    methods: {
+      showHandler() {
+        console.log("isShow", this.isShow)
+        this.isShow = !this.isShow;
+        console.log("isShow", this.isShow)
+      },
+      clearShopCart() {
+        MessageBox.confirm('确定要清空购物车嘛?').then(action => {
+          this.$store.dispatch("clearShopCart")
+        }, action => {
+          console.log("取消")
+        });
       }
     }
-
   }
 </script>
 <style lang="stylus" ref="stylesheet/stylus">
@@ -249,11 +256,11 @@
     height 100%
     z-index 40
     backdrop-filter blur(10px)
-    opacity 1
+    opacity 0.6
     background rgba(7, 17, 27, 0.6)
     &.fade-enter-active, &.fade-leave-active
       transition all 0.5s
     &.fade-enter, &.fade-leave-to
-      opacity 0
+      opacity 0.6
       background rgba(7, 17, 27, 0)
 </style>

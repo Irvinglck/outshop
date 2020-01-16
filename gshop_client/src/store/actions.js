@@ -1,7 +1,7 @@
 /**
  * 间接更新，通过mutation 更新state
  * */
-import {RECEIVE_ADDRESS, RECEIVE_FOOD_LIST, RECEIVE_SHOPS,RECEIVE_USER_INFO,REST_USER_INFO,RECEIVE_GOODS,RECEIVE_INFO,RECEIVE_RATINGS,DECREMENT_FOOD_COUNT,INCREMENT_FOOD_COUNT} from './mutations-type';
+import {RECEIVE_ADDRESS, RECEIVE_FOOD_LIST, RECEIVE_SHOPS,RECEIVE_USER_INFO,REST_USER_INFO,RECEIVE_GOODS,RECEIVE_INFO,RECEIVE_RATINGS,DECREMENT_FOOD_COUNT,INCREMENT_FOOD_COUNT,CLEAR_SHOP_CART} from './mutations-type';
 import {getFoodList, reqAddress, reqShops,reqUserInfo,reqLogout,reqShopGoods,reqShopInfo,reqShopRatings} from '../api'
 
 export default {
@@ -77,6 +77,9 @@ export default {
     }else{//减少食物
       commit(DECREMENT_FOOD_COUNT,{food})
     }
+  },
+  clearShopCart({commit}){
+    commit(CLEAR_SHOP_CART)
   }
   // //mock评价列表
   // async receiveRatings({commit}){

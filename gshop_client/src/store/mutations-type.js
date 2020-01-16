@@ -16,4 +16,6 @@
   export const INCREMENT_FOOD_COUNT ='increment_food_count';//购物车添加食品数量
   export const DECREMENT_FOOD_COUNT ='decrement_food_count';//购物车减少食品数量
 
+  export const CLEAR_SHOP_CART ='clear_shop_cart';//清空购物车
+
 
