@@ -78,15 +78,16 @@ export default {
       commit(DECREMENT_FOOD_COUNT,{food})
     }
   },
+  //清空购物车
   clearShopCart({commit}){
     commit(CLEAR_SHOP_CART)
-  }
+  },
   // //mock评价列表
-  // async receiveRatings({commit}){
-  //   const result=await reqShopRatings();
-  //   if(result.code===0){
-  //     let ratings=result.data;
-  //     commit(RECEIVE_GOODS,{ratings})
-  //   }
-  // }
+  async receiveRatings({commit}){
+    const result=await reqShopRatings();
+    if(result.code===0){
+      let ratings=result.data;
+      commit(RECEIVE_RATINGS,{ratings})
+    }
+  }
 }

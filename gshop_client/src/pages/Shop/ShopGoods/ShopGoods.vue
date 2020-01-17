@@ -122,7 +122,7 @@
       showFood(food){
         //设置当前组件state,的food值
         this.food=food;
-        //显示food组件
+        //显示food组件,调用子组件里面的方法
         this.$refs.food.showHandler();
       }
     },

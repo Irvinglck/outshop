@@ -29,7 +29,7 @@
               <span class="name">{{food.name}}</span>
               <div class="price"><span>￥{{food.price}}</span></div>
               <div class="cartcontrol-wrapper">
-                <CartControl :food="food"/>
+                <CartControl :food="food" ref="cartFood"/>
               </div>
             </li>
           </ul>
@@ -47,7 +47,7 @@
   export default {
     data() {
       return {
-        isShow: true
+        isShow: false
       }
     },
     computed: {
@@ -78,18 +78,31 @@
     },
     methods: {
       showHandler() {
-        console.log("isShow", this.isShow)
+        if(!this.shopCartFoods.length){
+          return
+        }
         this.isShow = !this.isShow;
-        console.log("isShow", this.isShow)
       },
       clearShopCart() {
         MessageBox.confirm('确定要清空购物车嘛?').then(action => {
+          //隐藏购物车列表
+          this.isShow=!this.isShow
+          //清空购物车
           this.$store.dispatch("clearShopCart")
         }, action => {
           console.log("取消")
         });
       }
+    },
+    watch:{
+      //监视购物车变化
+      shopCartFoods(value){
+        if(!this.shopCartFoods.length){
+          this.isShow=false
+        }
+      }
     }
+
   }
 </script>
 <style lang="stylus" ref="stylesheet/stylus">

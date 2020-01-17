@@ -38,6 +38,7 @@
       food: {}
     },
     methods: {
+      //功父组件吊用
       showHandler() {
         this.isShow = !this.isShow;
         console.log(this.isShow,"isShow")
