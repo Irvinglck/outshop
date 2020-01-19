@@ -11,5 +11,10 @@ export default {
     return state.shopCartFoods.reduce((preSumPrice, food) => {
       return preSumPrice + food.count * food.price
     }, 0)
+  },
+  positiveSize(state) {
+    return state.ratings.reduce((init, rating) => {
+      return init + (rating.rateType === 0 ? 0 : 1);
+    }, 0)
   }
 }

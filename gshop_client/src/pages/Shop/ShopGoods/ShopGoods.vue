@@ -12,7 +12,7 @@
         </ul>
       </div>
       <div class="foods-wrapper" ref="foodsWrapper">
-        <ul ref="foodsUl">
+        <ul ref="foodsUlList">
           <li class="food-list-hook" v-for="(good,index) in goods" :key="index" style="list-style: none">
             <h1 class="title">{{good.name}}</h1>
             <ul>
@@ -92,10 +92,12 @@
           });
           //给食物滚动标签设置监听
           this.foodScroll.on("scroll", ({x, y}) => {
+            // console.log("scroll---y",y)
             this.scrollY = Math.abs(y);
           }, this);
           //添加右侧滚动结束坐标监听
           this.foodScroll.on("scrollEnd", ({x, y}) => {
+            // console.log("scrollEnd---y",y)
             this.scrollY = Math.abs(y)
           }, this)
         })
@@ -105,10 +107,10 @@
         let top = 0;
         tops.push(top);
         //所有li像素
-        const lis = this.$refs.foodsUl.getElementsByClassName("Food-list-hook");
+        const lis = this.$refs.foodsUlList.getElementsByClassName("food-list-hook");
         //伪数组转真数组
         Array.prototype.slice.call(lis).forEach((item) => {
-          top += item.clientHeight;
+          top = top+item.clientHeight;
           tops.push(top);
         });
         this.tops = tops;

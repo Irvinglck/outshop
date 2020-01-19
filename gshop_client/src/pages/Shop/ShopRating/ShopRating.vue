@@ -26,9 +26,13 @@
       </div>
       <div class="split"></div>
       <div class="ratingselect">
-        <div class="rating-type border-1px"><span class="block positive active">全部<span class="count">30</span></span>
-          <span class="block positive">满意<span class="count">28</span></span>
-          <span class="block negative">不满意<span class="count">2</span></span>
+        <div class="rating-type border-1px">
+          <span class="block positive" :class="{active:selectType===2}" @click="onActive(2)">全部<span
+            class="count">{{ratings.length}}</span></span>
+          <span class="block positive" :class="{active:selectType===0}" @click="onActive(0)">满意<span
+            class="count">{{ratings.length-positiveSize}}</span></span>
+          <span class="block negative" :class="{active:selectType===1}" @click="onActive(1)">不满意<span
+            class="count">{{positiveSize}}</span></span>
         </div>
         <div class="switch" :class="{on:showduigou}" @click="showduigouHandler">
           <span class="iconfont icon-duigou"></span>
@@ -37,43 +41,23 @@
       </div>
       <div class="rating-wrapper">
         <ul>
-          <li class="rating-item" v-for="(rating,index) in ratings" :key="index">
+          <li class="rating-item" v-for="(rating,index) in filterRatings" :key="index">
             <div class="avatar">
-              <img width="28" height="28"
-                   src="http://static.galileo.xiaojukeji.com/static/tms/default_header.png">
+              <img width="28" height="28" :src="rating.avatar">
             </div>
             <div class="content">
-              <h1 class="name">aa</h1>
+              <h1 class="name">{{rating.username}}</h1>
               <div class="star-wrapper">
-                <Star :score="5" :size="24"/>
-                <span class="delivery">30</span>
+                <Star :score="rating.score" :size="24"/>
+                <span class="delivery">{{rating.deliveryTime}}</span>
               </div>
-              <p class="text">不错</p>
+              <p class="text">{{rating.text}}</p>
               <div class="recommend">
-                <span class="iconfont icon-thumb_up"></span>
-                <span class="item">南瓜粥</span>
-                <span class="item">皮蛋瘦肉粥</span>
-                <span class="item">扁豆焖面</span>
+                <!--icon-thumb_up-->
+                <span class="iconfont" :class="rating.rateType===0?'icon-tuijian':'icon-tucao-tianchong'"></span>
+                <span class="item" v-for="(item,index) in rating.recommend" :key="index">{{item}}</span>
               </div>
-              <div class="time">2016-07-23 21:52:44</div>
-            </div>
-          </li>
-          <li class="rating-item">
-            <div class="avatar">
-              <img width="28" height="28"
-                   src="http://static.galileo.xiaojukeji.com/static/tms/default_header.png">
-            </div>
-            <div class="content">
-              <h1 class="name">aa</h1>
-              <div class="star-wrapper">
-                <Star :score="4" :size="24"/>
-                <span class="delivery">30</span>
-              </div>
-              <p class="text">不错</p>
-              <div class="recommend">
-                <span class="iconfont icon-thumb_down"></span>
-              </div>
-              <div class="time">2016-07-23 21:52:44</div>
+              <div class="time">{{rating.rateTime}}</div>
             </div>
           </li>
         </ul>
@@ -83,34 +67,56 @@
 </template>
 <script>
   import Star from "../../star/star"
-  import {mapState} from "vuex"
+  import {mapState,mapGetters} from "vuex"
+  import BScorll from "better-scroll"
+
   export default {
-    data(){
-      return{
-        showduigou:false
+    data() {
+      return {
+        showduigou: false,//是否显示文字评论
+        selectType: 2//评价类型，2==表示所有评论数据
       }
     },
-    mounted(){
+    mounted() {
       //发送ajax请求
-      this.$store.dispatch("receiveRatings")
+      this.$store.dispatch("receiveRatings", () => {
+        this.$nextTick(() => {
+          new BScorll(".ratings", {
+            click: true
+          })
+        })
+      })
     },
     //组件的数据源之一，计算属性
-    computed:{
-      ...mapState(['ratings','info'])
+    computed: {
+      ...mapState(['ratings', 'info']),
+      ...mapGetters(['positiveSize']),
+      filterRatings() {
+        const {ratings, selectType, showduigou} = this
+        return ratings.filter(item => {
+          const {rateType, text} = item;
+          return (selectType === 2 || selectType === rateType) && (!showduigou || text.length > 0)
+        })
+      }
+
     },
-    watch:{
-      ratings(){
-        console.log(this.ratings,"watch,ratings")
+    watch: {
+      ratings() {
+        console.log(this.ratings, "watch,ratings")
       }
     },
-    components:{
+    components: {
       Star
     },
-    methods:{
-      showduigouHandler(){
-        this.showduigou=!this.showduigou
+    methods: {
+      showduigouHandler() {
+        this.showduigou = !this.showduigou
+      },
+      onActive(value) {
+        this.selectType = value;
       }
-    }
+
+    },
   }
 </script>
 <style lang="stylus" rel="stylesheet/stylus">
@@ -270,13 +276,13 @@
           .recommend
             line-height: 16px
             font-size: 0
-            .icon-thumb_up, .icon-thumb_down, .item
+            .icon-tuijian, .icon-tucao-tianchong, .item
               display: inline-block
               margin: 0 8px 4px 0
               font-size: 9px
-            .icon-thumb_up
+            .icon-tuijian
               color: $yellow
-            .icon-thumb_down
+            .icon-tucao-tianchong
               color: rgb(147, 153, 159)
 
             .item

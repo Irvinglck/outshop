@@ -60,7 +60,12 @@
   </div>
 </template>
 <script>
-  export default {}
+  import BScorll from "better-scroll"
+  export default {
+    mounted(){
+      new BScorll(".shop-info")
+    }
+  }
 </script>
 <style lang="stylus" rel="stylesheet/stylus">
   @import "../../../common/stylus/mixins.styl"
