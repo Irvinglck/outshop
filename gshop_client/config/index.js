@@ -11,7 +11,7 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/api': { // 匹配所有以 '/api'开头的请求路径
-        target: 'http://localhost:3333', // 代理目标的基础路径
+        target: 'http://localhost:7788', // 代理目标的基础路径
         changeOrigin: true, // 支持跨域
         secure : false,
         pathRewrite: {// 重写路径: 去掉路径中开头的'/api'
@@ -58,7 +58,9 @@ module.exports = {
     // Paths
     assetsRoot: path.resolve(__dirname, '../dist'),
     assetsSubDirectory: 'static',
-    assetsPublicPath: '/',
+    // assetsPublicPath: '/',
+    //打包
+    assetsPublicPath: './',
 
     /**
      * Source Maps
